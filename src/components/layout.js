@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, StyleProp, ViewStyle } from 'react-native';
-
 export function Flex(
     { children, style, dom, column, horizontal, vertical, HW, flex1, other }:
         {
@@ -17,8 +16,8 @@ export function Flex(
         style = {};
     }
     if (!column) style.flexDirection = 'row';
-    if (horizontal||HW) style.justifyContent = 'center';
-    if (vertical||HW) style.alignItems = 'center';
+    if (horizontal || HW) style.justifyContent = 'center';
+    if (vertical || HW) style.alignItems = 'center';
     if (flex1) style.flex = 1;
     return (
         <View ref={dom} style={style} {...other}>
