@@ -23,15 +23,16 @@ export class Image extends React.Component {
             styles.width = width
         }
         if (uri) {
-            source={ uri: uri }
-        }else{
-            source=src
+            source = { uri: uri }
+        } else {
+            source = src
         }
         return (
             <Img style={styles} source={source} {...other} />
         );
     }
 }
+
 type TextProps = BaseProps & StyleText & {
     label: string,
     color: string,
@@ -57,3 +58,4 @@ export class Text extends React.Component {
         );
     }
 }
+
