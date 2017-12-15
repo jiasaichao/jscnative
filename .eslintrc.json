@@ -25,7 +25,7 @@
     ],
     "rules": {
         "linebreak-style": [
-            "error",
+            "0",
             "unix"
         ],
         //"semi": ["error", "always"],
