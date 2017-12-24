@@ -23,7 +23,7 @@ type IconProps = BaseProps & {
     width: number,
     height: number,
     background: string,
-    name: 'arrowUp'|'arrowRight'
+    name: 'arrowUp'|'arrowRight'|'arrowDown'|'arrowLeft'|'arrowBack'|'arrowForward'
 }
 export class Icon extends React.Component {
     props: IconProps;
@@ -48,7 +48,6 @@ export class Icon extends React.Component {
             case 'arrowForward':
                 content = <Polygon fill={this.props.color} points="160,128.4 192.3,96 352,256 352,256 352,256 192.3,416 160,383.6 287.3,256 "/>
                 break;
-
             default:
                 break;
         }
