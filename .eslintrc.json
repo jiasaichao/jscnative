@@ -25,7 +25,7 @@
     ],
     "rules": {
         "linebreak-style": [
-            "0",
+            0,
             "unix"
         ],
         //"semi": ["error", "always"],
@@ -59,6 +59,7 @@
             }
         ],
         "new-parens": 2,
+        "no-empty-pattern": 0,
         "no-array-constructor": 2,
         "no-class-assign": 2,
         "no-cond-assign": 2
