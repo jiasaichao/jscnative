@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, TextInput, PixelRatio, TouchableOpacity } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Flex, Icon, Image, Placeholder, Text } from '../components';
+import { login } from './services';
 /**
  * 登录
  */
@@ -41,7 +42,7 @@ class LoginScreen extends React.Component {
         );
     }
     handleLogin = () => {
-
+        login('loginname=2222&pwd=22222', () => { });
     }
 }
 
