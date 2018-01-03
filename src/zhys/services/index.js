@@ -1,5 +1,6 @@
 import { Alert } from 'react-native'
 import axios from 'axios';
+import {Toast} from 'antd-mobile'
 
 const BASEURL = 'http://gis.cloud.rtzltech.cn:8010/monitoringserver/';
 function getData(url, params, callback) {
@@ -37,18 +38,23 @@ function getData(url, params, callback) {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
     });
-    instance.post(BASEURL + url, params).then((data) => {
+    instance.post(BASEURL + url, params).then(({data}) => {
         console.log('数据', data);
         if (data && '99' == data.retcode) {
-            Alert(data.retmsg);
-            // window.mui.alert(data.retmsg);
-            // window.plus.runtime.restart();
+            // Alert(data.retmsg);
+            Toast.info(data.retmsg);
+            return;
+        }
+        if (data && '-1' == data.retcode) {
+            // Alert(data.retmsg);
+            Toast.info(data.retmsg);
             return;
         }
         callback(data);
     }).catch((error) => {
-        console.log(error)
-        alert('错误')
+        // console.log(error)
+        Toast.info(error);
+        // alert('错误')
     });
 }
 export function login(params, callback) {

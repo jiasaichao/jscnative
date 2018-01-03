@@ -4,5 +4,5 @@ import Nav from './src/demo/reactnavigation/stacknavigator';
 import { MainScreenNavigator } from './src/demo/reactnavigation/tabnavigator';
 import { BaseComp } from './src/demo/basecomponents';
 import { SimpleApp } from './src/demo/antdmobile/list'
-import {Login} from './src/zhys/login';
-AppRegistry.registerComponent('jscnative', () => Login);
+import {Index} from './src/zhys';
+AppRegistry.registerComponent('jscnative', () => Index);

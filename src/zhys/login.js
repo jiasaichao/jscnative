@@ -6,11 +6,14 @@ import { login } from './services';
 /**
  * 登录
  */
-class LoginScreen extends React.Component {
+export class LoginScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
     };
-    input = {}
+    input = {
+        name:'',
+        pwd:''
+    }
     constructor(props) {
         super(props);
     }
@@ -25,11 +28,11 @@ class LoginScreen extends React.Component {
                     <Flex column style={{ width: '100%', backgroundColor: '#fff', borderBottomWidth: 1, borderColor: '#d1d1d1', borderRadius: 5 }}>
                         <Flex vertical style={{ borderBottomWidth: 1 / PixelRatio.get(), borderColor: '#d1d1d1', height: 41 }}>
                             <Text label='账号' color='#666' fontSize={15} style={{ marginLeft: 10, marginRight: 10 }} />
-                            <TextInput onChange={(e) => { this.input.name = e.target.value }} style={{ borderWidth: 0, height: 35, flex: 1 }} />
+                            <TextInput autoCapitalize='none' autoCorrect={false} onChange={(e) => { this.input.name = e.target.value }} style={{ borderWidth: 0, height: 35, flex: 1 }} />
                         </Flex>
                         <Flex vertical style={{ height: 41 }}>
-                            <Text label='账号' color='#666' fontSize={15} style={{ marginLeft: 10, marginRight: 10 }} />
-                            <TextInput onChange={(e) => { this.input.name = e.target.value }} style={{ borderWidth: 0, height: 35, flex: 1 }} />
+                            <Text label='密码' color='#666' fontSize={15} style={{ marginLeft: 10, marginRight: 10 }} />
+                            <TextInput secureTextEntry onChange={(e) => { this.input.pwd = e.target.value }} style={{ borderWidth: 0, height: 35, flex: 1 }} />
                         </Flex>
                     </Flex>
                     <TouchableOpacity onPress={this.handleLogin} style={{ marginTop: 18, marginBottom: 14, justifyContent: 'center', alignItems: 'center', height: 38, backgroundColor: '#21b3ff', borderRadius: 5 }}>
@@ -42,7 +45,11 @@ class LoginScreen extends React.Component {
         );
     }
     handleLogin = () => {
-        login('loginname=2222&pwd=22222', () => { });
+        const { navigate } = this.props.navigation;
+        navigate('Home')
+        // login(`loginname=${this.input.name}&pwd=${this.input.pwd}`, (data) => {
+        //     navigate('HomeScreen')
+        //  });
     }
 }
 

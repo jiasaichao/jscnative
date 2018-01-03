@@ -42,6 +42,6 @@ export class Flex extends React.Component {
 
 export function Placeholder() {
     return (
-        <View style={{ flexBasis: 1 }}></View>
+        <View style={{ flex: 1 }}></View>
     );
 }
