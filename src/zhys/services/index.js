@@ -60,3 +60,6 @@ function getData(url, params, callback) {
 export function login(params, callback) {
     getData('login', params, callback);
 }
+export function getcheliang(params, callback) {
+    getData('track/devListPage.action', params, callback);
+}

@@ -46,10 +46,10 @@ export class LoginScreen extends React.Component {
     }
     handleLogin = () => {
         const { navigate } = this.props.navigation;
-        navigate('Home')
-        // login(`loginname=${this.input.name}&pwd=${this.input.pwd}`, (data) => {
-        //     navigate('HomeScreen')
-        //  });
+        // navigate('Home')
+        login(`loginname=changjiu&pwd=1234`, (data) => {
+            navigate('Home')
+         });
     }
 }
 
