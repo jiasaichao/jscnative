@@ -3,6 +3,7 @@ import { StyleSheet, View, Button, TextInput, PixelRatio, TouchableOpacity, Plat
 import { StackNavigator } from 'react-navigation';
 import { Flex, Icon, Image, Placeholder, Text } from '../components';
 import { login, getcheliang } from './services';
+import { MapView, Circle } from 'react-native-amap3d'
 /**
  * 设备详情
  */
@@ -22,10 +23,22 @@ export class PositionServiceScreen extends React.Component {
             // ]
         }
     }
+    coordinate = {
+        latitude: 39.906901,
+        longitude: 116.397972,
+    }
     render() {
         const { navigate, state } = this.props.navigation;
         return (
             <View style={{ height: Dimensions.get('screen').height, backgroundColor: '#fff' }}>
+                <MapView style={StyleSheet.absoluteFill}>
+                    <Circle
+                        strokeWidth={5}
+                        strokeColor='rgba(0, 0, 255, 0.5)'
+                        fillColor='rgba(255, 0, 0, 0.5)'
+                        radius={10000}
+                        coordinate={this.coordinate} />
+                </MapView>
             </View>
         );
     }
