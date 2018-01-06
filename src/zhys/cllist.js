@@ -10,10 +10,13 @@ export class ClListScreen extends React.Component {
     static navigationOptions = {
 
     };
+    page = 1
     constructor(props) {
         super(props);
         this.state = {
-            data1:[]
+            data1: [],
+            refreshing: true,
+            loadMore: false
             // data1: [
             //     { id: 1, title: '230198590432715', num: 'SUV0932475098', adr: '北京市通州区梨园镇', name: '奥运村02号围栏' },
             //     { id: 2, title: '32624365437654', num: 'SDFDG4536789765', adr: '北京市通州区梨园镇', name: '奥运村03号围栏' },
@@ -25,7 +28,7 @@ export class ClListScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={{ height: Dimensions.get('screen').height, backgroundColor: '#fff' }}>
+            <View style={{ height: '100%', backgroundColor: '#fff' }}>
                 <StatusBar barStyle='light-content' translucent={true} />
                 <Flex column style={{ paddingLeft: 15 }}>
                     <Flex HW style={{ marginTop: 12, marginRight: 15 }}>
@@ -37,11 +40,16 @@ export class ClListScreen extends React.Component {
                         </TouchableOpacity>
                     </Flex>
                 </Flex>
-                <Flex style={{ paddingLeft: 15 }} column>
+                <Flex flex1 style={{ paddingLeft: 15 }} column>
                     <FlatList
                         data={this.state.data1}
                         renderItem={this._renderItem}
-                        keyExtractor={this._keyExtractor}
+                        // keyExtractor={this._keyExtractor}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handLoadData}
+                        onEndReached={() => { this.getData(this.page + 1) }}
+                        onEndReachedThreshold={0.1}
+                        ListFooterComponent={this._renderFooter}
                     />
                     {/* {this.state.data1.map((item, index) => (
                         <TouchableOpacity
@@ -75,10 +83,10 @@ export class ClListScreen extends React.Component {
     _keyExtractor = (item, index) => item.id;
     _renderItem = ({ item }) => (
         <TouchableOpacity
-        onPress={() => {
-            const { navigate } = this.props.navigation;
-            navigate('DeviceDetail', item)
-        }}
+            onPress={() => {
+                const { navigate } = this.props.navigation;
+                navigate('DeviceDetail', item)
+            }}
             key={item.id} style={{ paddingTop: 15, paddingRight: 5, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#d1d1d1', flexDirection: 'row', alignItems: 'center' }}>
             <Flex column>
                 <Flex style={{ marginBottom: 8 }}>
@@ -102,10 +110,31 @@ export class ClListScreen extends React.Component {
             <Icon name='arrowRight' color='#808080' width={30} height={30} color='#b1b1b1' />
         </TouchableOpacity>
     );
+    _renderFooter=()=>{
+        if(this.state.loadMore){
+            return (<Flex HW><Text label='加载中...' /></Flex>)
+        }else{
+            return null;
+        }
+    }
     componentDidMount() {
-        getcheliang(`page=1&rows=20`, (data) => {
+        this.getData();
+    }
+    getData(page = 1) {
+        let state={}
+        if(page==1){
+            state.refreshing=true;
+        }else{
+            state.loadMore=true;
+        }
+        this.setState(state);
+        getcheliang(`page=${page}&rows=20`, (data) => {
+            this.page = page;
             let rdata = [];
-            console.table(data)
+            if (page > 1) {
+                rdata = this.state.data1;
+            }
+            // console.table(data)
             data.forEach((item) => {
                 let rdataitem = {
                     id: item.devNo,
@@ -116,11 +145,11 @@ export class ClListScreen extends React.Component {
                 }
                 rdata.push(rdataitem);
             });
-            this.setState({ data1: rdata })
+            this.setState({ refreshing: false, data1: rdata, loadMore:false });
         })
     }
-    getData(page) {
-        getcheliang({ page: 1, rows: 20 }, (data) => { })
+    handLoadData = () => {
+        this.getData();
     }
     handleLogin = () => {
 
