@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, TextInput, PixelRatio, TouchableOpacity, Platform, StatusBar, Dimensions, FlatList, ScrollView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Flex, Icon, Image, Placeholder, Text } from '../components';
-import { login, getcheliang } from './services';
+import { login, getcheliang, getrealTimeTrack } from './services';
 /**
  * 设备详情
  */
@@ -28,7 +28,9 @@ export class DeviceDetailScreen extends React.Component {
             <ScrollView style={{ height: Dimensions.get('screen').height, backgroundColor: '#fff' }}>
                 <StatusBar barStyle='light-content' translucent={true} />
                 <TouchableOpacity
-                    onPress={() => { navigate('PositionService') }}
+                    onPress={() => { getrealTimeTrack(state.params.title, (data)=>{
+                        navigate('PositionService', data)
+                    })  }}
                     style={{ flex: 1, borderBottomWidth: 1, borderBottomColor: '#d1d1d1', paddingTop:10, paddingBottom:10, flexDirection:'row' }}>
                     <Flex HW style={{ width: 36, height: 36, marginRight: 10 }}>
                         <Image width={36} height={36} src={require(`./img/address.png`)} />
