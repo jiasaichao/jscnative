@@ -7,13 +7,19 @@
     "test": "jest"
   },
   "dependencies": {
+    "antd-mobile": "^2.1.4",
+    "axios": "^0.17.1",
     "react": "16.2.0",
     "react-native": "0.52.1",
     "react-native-svg": "^5.5.1"
   },
   "devDependencies": {
+    "babel-eslint": "^8.0.3",
     "babel-jest": "22.1.0",
+    "babel-plugin-import": "^1.6.3",
     "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.12.1",
+    "eslint-plugin-react": "^7.5.1",
     "jest": "22.1.4",
     "react-test-renderer": "16.2.0"
   },
