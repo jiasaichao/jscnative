@@ -2,14 +2,13 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 // import {} from 'react-native'
-import {} from 'react-navigation/src/'
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+import CardStackStyleInterpolator from 'react-native-router-flux/node_modules/react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
 export class App extends React.Component {
     render() {
         return <Router>
             <Scene key="root" titleStyle={{ alignSelf: 'center' }}
-                // transitionConfig={() => ({ screenInterpolator: CardStackStyleInterpolator.forHorizontal })}
+                transitionConfig={() => ({ screenInterpolator: CardStackStyleInterpolator.forHorizontal })}
                 >
                 <Scene key="login" component={Login} title="Login" />
                 <Scene key="register" component={Register} title="Register" />
