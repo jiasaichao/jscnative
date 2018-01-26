@@ -4,7 +4,14 @@
  * @flow
  */
 
-import React, { Component } from 'react';import Svg,{
+import React, { Component } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+import Svg,{
   Circle,
   Ellipse,
   G,
@@ -20,13 +27,6 @@ import React, { Component } from 'react';import Svg,{
   Defs,
   Stop
 } from 'react-native-svg';
-
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
