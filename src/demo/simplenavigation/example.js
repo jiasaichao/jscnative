@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
-import nav, { push, goBack } from './index';
+import nav, { push, goBack, reset } from './index';
 import { Icon } from '../../components/icon';
 class LoginScreen extends React.Component {
     // static navigationOptions = {
@@ -15,7 +15,8 @@ class LoginScreen extends React.Component {
                 <Text>登录页面</Text>
                 <Button
                     onPress={() => {
-                        push('App2');
+                        reset('App2');
+                        // push('App2');
                         // navigate('Content', {}, NavigationActions.navigate({ routeName: 'App2' }))
                     }}
                     title="跳转到App2"
@@ -86,7 +87,10 @@ const SimpleApp = nav([
 ])
 const defaultStateAction = SimpleApp.router.getStateForAction;
 SimpleApp.router.getStateForAction = (action, state) => {
-    console.log('ffff', action, state);
+    console.log('导航动作', action, state);
+    // if(action.aaa=='2222'){
+    //     state=undefined;
+    // }
     return defaultStateAction(action, state);
 }
 export default class App extends React.Component {

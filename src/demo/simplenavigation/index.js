@@ -4,6 +4,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 
 export let push = null;
 export let goBack = null;
+export let reset = null;
 /**
  * 全部路由界面
  */
@@ -78,7 +79,18 @@ export default function Index(Screens: Array<{ name: String, Component: React.Co
             currentAllScreens.pop();
             navigation.goBack(null)
             // currentAllScreens.push({ name: name, key: null });
-          };
+          }
+          reset = (routeName, params) => {
+            const resetAction = NavigationActions.navigate(
+              {
+                routeName, 
+                params
+              }
+            )
+            resetAction.aaa='2222';
+            console.log('resetAction', resetAction);
+            navigation.dispatch(resetAction);
+          }
         }
         else {
         }

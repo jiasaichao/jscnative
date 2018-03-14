@@ -4,16 +4,20 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "storybook start -p 7007"
   },
   "dependencies": {
     "antd-mobile": "^2.1.4",
     "axios": "^0.17.1",
+    "npm": "^5.7.1",
     "react": "16.2.0",
     "react-native": "0.52.1",
     "react-native-router-flux": "^4.0.0-beta.28",
+    "react-native-svg": "^5.5.1",
     "react-navigation": "^1.0.3",
-    "react-native-svg": "^5.5.1"
+    "to": "^0.2.9",
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
@@ -23,7 +27,14 @@
     "eslint": "^4.12.1",
     "eslint-plugin-react": "^7.5.1",
     "jest": "22.1.4",
-    "react-test-renderer": "16.2.0"
+    "react-test-renderer": "16.2.0",
+    "@storybook/react-native": "^3.3.15",
+    "@storybook/addon-actions": "^3.3.15",
+    "@storybook/addon-links": "^3.3.15",
+    "@storybook/addons": "^3.3.15",
+    "babel-core": "^6.26.0",
+    "react-dom": "16.2.0",
+    "prop-types": "^15.6.1"
   },
   "jest": {
     "preset": "react-native"
