@@ -1,0 +1,5 @@
+{
+  "printWidth": 145,
+  "parser": "babylon",
+  "singleQuote":true
+}
