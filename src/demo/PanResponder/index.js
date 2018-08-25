@@ -20,11 +20,11 @@ export default class App2 extends React.Component {
     this.state = {
       style: { backgroundColor: 'blue' }
     };
-    this.onStartShouldSetPanResponder = this.onStartShouldSetPanResponder.bind(this);
-    this.onMoveShouldSetPanResponder = this.onMoveShouldSetPanResponder.bind(this);
-    this.onPanResponderGrant = this.onPanResponderGrant.bind(this);
-    this.onPanResponderMove = this.onPanResponderMove.bind(this);
-    this.onPanResponderRelease = this.onPanResponderRelease.bind(this);
+    // this.onStartShouldSetPanResponder = this.onStartShouldSetPanResponder.bind(this);
+    // this.onMoveShouldSetPanResponder = this.onMoveShouldSetPanResponder.bind(this);
+    // this.onPanResponderGrant = this.onPanResponderGrant.bind(this);
+    // this.onPanResponderMove = this.onPanResponderMove.bind(this);
+    // this.onPanResponderRelease = this.onPanResponderRelease.bind(this);
   }
 
   componentWillMount(evt, gestureState) {
@@ -51,17 +51,17 @@ export default class App2 extends React.Component {
   }
 
   //用户开始触摸屏幕的时候，是否愿意成为响应者；
-  onStartShouldSetPanResponder(evt, gestureState) {
+  onStartShouldSetPanResponder = (evt, gestureState) => {
     return true;
-  }
+  };
 
   //在每一个触摸点开始移动的时候，再询问一次是否响应触摸交互；
-  onMoveShouldSetPanResponder(evt, gestureState) {
+  onMoveShouldSetPanResponder = (evt, gestureState) => {
     return true;
-  }
+  };
 
   // 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！
-  onPanResponderGrant(evt, gestureState) {
+  onPanResponderGrant = (evt, gestureState) => {
     console.log('onPanResponderGrant...');
     this.setState({
       style: {
@@ -70,10 +70,10 @@ export default class App2 extends React.Component {
         top: _previousTop
       }
     });
-  }
+  };
 
   // 最近一次的移动距离为gestureState.move{X,Y}
-  onPanResponderMove(evt, gestureState) {
+  onPanResponderMove = (evt, gestureState) => {
     _previousLeft = lastLeft + gestureState.dx;
     _previousTop = lastTop + gestureState.dy;
 
@@ -100,21 +100,21 @@ export default class App2 extends React.Component {
         top: _previousTop
       }
     });
-  }
+  };
 
   // 用户放开了所有的触摸点，且此时视图已经成为了响应者。
   // 一般来说这意味着一个手势操作已经成功完成。
-  onPanResponderRelease(evt, gestureState) {
+  onPanResponderRelease = (evt, gestureState) => {
     lastLeft = _previousLeft;
     lastTop = _previousTop;
 
     this.changePosition();
-  }
+  };
 
   /**
      根据位置做出相应处理
      **/
-  changePosition() {
+  changePosition = () => {
     if (_previousLeft + CIRCLE_SIZE / 2 <= Dimensions.get('window').width / 2) {
       _previousLeft = lastLeft = 0;
 
@@ -134,7 +134,7 @@ export default class App2 extends React.Component {
         }
       });
     }
-  }
+  };
 
   render() {
     return <View {...this._panResponder.panHandlers} style={[styles.circle, this.state.style]} />;
