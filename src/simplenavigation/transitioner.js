@@ -69,7 +69,7 @@ export class Transitioner extends Component<P> {
     );
   }
   componentDidMount() {
-    console.log('this.props.switch:' + this.props.switch);
+    // console.log('this.props.switch:' + this.props.switch);
     switch (this.props.switch) {
       case 'current':
         break;
@@ -86,7 +86,7 @@ export class Transitioner extends Component<P> {
     }
   }
   startAnimated(targetValue, startValue = null, isAndimated = true) {
-    if (startValue != null) {
+    if (startValue != null && !utils.simpleNavigation.isResponding) {
       this.state.position.setValue(startValue);
     }
     if (isAndimated) {
@@ -96,6 +96,7 @@ export class Transitioner extends Component<P> {
         toValue: targetValue,
         useNativeDriver: true
       }).start(function() {
+        utils.simpleNavigation.isResponding = false;
         utils.simpleNavigation.setTransitionRunning(false);
       });
     } else {
@@ -103,7 +104,7 @@ export class Transitioner extends Component<P> {
     }
   }
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps);
+    // console.log('nextProps', nextProps);
     switch (nextProps.switch) {
       case 'current':
         this.startAnimated(0, null, false);
