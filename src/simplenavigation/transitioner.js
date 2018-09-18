@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, Animated, Easing, Button, PanResponder } from 'react-native';
 import { tSwitch } from './type/enum';
 import { config } from './config';
+import { utils } from './utils';
 let pwidth = Dimensions.get('screen').width;
 // 缺省屏幕过渡动画设置,可以被覆盖
 const DefaultTransitionSpec = {
@@ -12,12 +13,14 @@ const DefaultTransitionSpec = {
 type P = {
   switch: tSwitch,
   /**排序 */
-  sort: number
+  sort: number,
+  id: number
 };
 export class Transitioner extends Component<P> {
   state = { position: new Animated.Value(this.props.position) };
   constructor(props) {
     super(props);
+    utils.simpleNavigation.stackRouter.find(item => item.id === this.props.id).element = this;
     switch (this.props.switch) {
       case 'current':
         this.state.position = new Animated.Value(0);
@@ -66,35 +69,58 @@ export class Transitioner extends Component<P> {
     );
   }
   componentDidMount() {
+    console.log('this.props.switch:' + this.props.switch);
     switch (this.props.switch) {
       case 'current':
         break;
       case 'backCurrent':
       case 'pushCurrent':
-        Animated.timing(this.state.position, {
-          ...DefaultTransitionSpec,
-          toValue: 0,
-          useNativeDriver: true
-        }).start();
+        this.startAnimated(0);
         break;
       case 'backHide':
-        Animated.timing(this.state.position, {
-          ...DefaultTransitionSpec,
-          toValue: config.backStartPosition,
-          useNativeDriver: true
-        }).start();
+        this.startAnimated(config.backStartPosition);
         break;
       case 'pushHide':
-        Animated.timing(this.state.position, {
-          ...DefaultTransitionSpec,
-          toValue: pwidth,
-          useNativeDriver: true
-        }).start();
+        this.startAnimated(pwidth);
         break;
+    }
+  }
+  startAnimated(targetValue, startValue = null, isAndimated = true) {
+    if (startValue != null) {
+      this.state.position.setValue(startValue);
+    }
+    if (isAndimated) {
+      utils.simpleNavigation.setTransitionRunning(true);
+      Animated.timing(this.state.position, {
+        ...DefaultTransitionSpec,
+        toValue: targetValue,
+        useNativeDriver: true
+      }).start(function() {
+        utils.simpleNavigation.setTransitionRunning(false);
+      });
+    } else {
+      this.state.position.setValue(targetValue);
     }
   }
   componentWillReceiveProps(nextProps) {
     console.log('nextProps', nextProps);
+    switch (nextProps.switch) {
+      case 'current':
+        this.startAnimated(0, null, false);
+        break;
+      case 'backCurrent':
+        this.startAnimated(0, config.backStartPosition);
+        break;
+      case 'pushCurrent':
+        this.startAnimated(0, pwidth);
+        break;
+      case 'backHide':
+        this.startAnimated(config.backStartPosition, 0);
+        break;
+      case 'pushHide':
+        this.startAnimated(pwidth, 0);
+        break;
+    }
   }
   shouldComponentUpdate() {
     return false;

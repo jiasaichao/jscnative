@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, Animated, Easing, Button, PanResponder } from 'react-native';
+import { utils } from './utils';
 import { tSwitch } from './type/enum';
 import { Transitioner } from './transitioner';
 let pwidth = Dimensions.get('screen').width;
@@ -7,25 +8,33 @@ let pwidth = Dimensions.get('screen').width;
  *
  */
 type Nav = {
+  /**id第一个为1 */
+  id: number,
   /**屏幕组件，也就是要展示的组件 */
   screen: React.ReactElement,
-  /**排序，越小越在底层，第一个为0，缓存页面为-1，这个值影响zindex */
-  sort: number,
+  element: Transitioner,
   /**
    * 状态1当前显示，2已经显示过（打开过的，返回一级一级返回这些页面），3缓存
    */
   state: 1 | 2 | 3 | 4,
+  /** */
+  routerName: string,
   /**
-   *current:瞬间到当前，pushCurrent:进入方式到当前<--，backCurrent:退出方式到当前-->，pushHide:-->,backHide<--:
+   * none:不做任何变动（不需要执行动画，一般动画执行完成所有的都会变成none，以便下次不会执行动画）
+   * current:瞬间到当前，pushCurrent:进入方式到当前<--，backCurrent:退出方式到当前-->，
+   * pushHide:-->,backHide<--:
+   *
    */
   switch: tSwitch
 };
-type tPages = { [string]: { screen: React.Component } };
-class SimpleNavigation {
+type tPage = { screen: React.Component };
+type tPages = { [string]: tPage };
+export class SimpleNavigation {
   constructor(pages: tPages, options) {
     this.pages = pages;
     let InitialRoute = this.pages[options.initialRouteName];
-    this.stackRouter.push({ screen: InitialRoute.screen, sort: 0, state: 1, switch: 'current' });
+    this.stackRouter.push({ screen: InitialRoute.screen, state: 1, switch: 'current', id: 1, routerName: options.initialRouteName });
+    this.maxId = 1;
     this.screenView1 = (
       <ScreenView
         ref={r => {
@@ -37,12 +46,15 @@ class SimpleNavigation {
         stackRouter={this.stackRouter}
       />
     );
+    utils.simpleNavigation = this;
   }
   screenView: React.ReactElement;
   /**所有配置的页面 */
   pages: tPages = {};
   /**堆栈路由，所有已经打开的页面都会保存到这里 */
   stackRouter: Array<Nav> = [];
+  /**最大id号 */
+  maxId: 0;
   /**是否动画过度中 */
   isTransitionRunning: false;
   /**跳转到新页面 */
@@ -50,34 +62,51 @@ class SimpleNavigation {
     if (this.isTransitionRunning) {
       return;
     }
-    let sort = 0;
     this.stackRouter.forEach(item => {
-      if (item.sort > sort) {
-        sort = item.sort;
-      }
+      item.switch = 'none';
       //原来的当前页面
       if (item.state === 1) {
         item.state == 2;
+        item.switch = 'backHide';
       }
     });
-    sort++;
-    // let sort = Math.max.apply(null, this.stackRouter.map(item => item.sort));
     let router: Nav = {
       screen: this.pages[routerName].screen,
-      sort,
+      routerName: routerName,
       state: 1,
-      switch: 'pushCurrent'
+      switch: 'pushCurrent',
+      id: this.maxId + 1
     };
     this.stackRouter.push(router);
+    this.maxId = router.id;
     // console.log(this.screenView1);
     this.screenView.refresh();
   };
   /**返回上一个页面 */
-  back = () => {};
+  back = () => {
+    this.stackRouter.forEach((item, index) => {
+      item.switch = 'none';
+      if (item.state == 1) {
+        item.switch = 'pushHide';
+        item.state = 2;
+      }
+      if (this.stackRouter.length - 2 == index) {
+        item.switch = 'backCurrent';
+        item.state = 1;
+      }
+    });
+
+    this.screenView.refresh(() => {
+      this.stackRouter.pop();
+    });
+  };
   /**替换当前页并加载新页面 */
   replace = () => {};
   /**跳转到最顶层页面 */
   backToTop = () => {};
+  setTransitionRunning = value => {
+    this.isTransitionRunning = value;
+  };
 }
 
 /**拖拽释放后动画执行的最大时间ms，实际应小于此值因为剩余距离总是小于全部距离 */
@@ -94,14 +123,16 @@ const RESPOND_THRESHOLD = 20;
 const GESTURE_RESPONSE_DISTANCE_HORIZONTAL = 25;
 /**缺省情况下，竖直方向上，拖拽起始点坐标<135，拖拽手势被认可 */
 const GESTURE_RESPONSE_DISTANCE_VERTICAL = 135;
-
+type P = {
+  stackRouter: Array<Nav>
+};
 /**
  * 1.滑动的距离超过一定距离才成立 ✅
  * 2.起始位置必须在范围内才成立 ✅
  * 3.松手后复位，上一页，下一页 ✅
  * 4.如果下拉一定距离则不会触发页面切换
  */
-class ScreenView extends Component {
+class ScreenView extends Component<P> {
   state = {
     screen: [],
     value: new Animated.Value(pwidth),
@@ -144,29 +175,14 @@ class ScreenView extends Component {
   render() {
     return (
       <View style={{ flex: 1 }} {...this._panResponder.panHandlers}>
-        {this.props.stackRouter.map(item => {
+        {this.props.stackRouter.map((item, index) => {
           let Aaaa = item.screen;
-
-          let translateX;
-          switch (item.state) {
-            case 1:
-              translateX = this.state.value2;
-              break;
-            case 2:
-              translateX = this.state.value;
-              break;
-            case 3:
-              break;
-            case 4:
-              break;
-          }
           return (
-            <Transitioner sort={1} switch="pushCurrent">
+            <Transitioner key={item.id} id={item.id} sort={index} switch={item.switch}>
               <Aaaa />
             </Transitioner>
           );
         })}
-
         <View style={{ marginTop: 30, position: 'absolute', zIndex: 77 }}>
           <Button title="确定" onPress={this.queding} />
         </View>
@@ -184,10 +200,12 @@ class ScreenView extends Component {
     // console.log(App);
     App.push('A2');
   };
-  refresh = () => {
-    this.forceUpdate();
+  refresh = callBack => {
+    this.forceUpdate(callBack);
   };
-  fanhui = () => {};
+  fanhui = () => {
+    App.back();
+  };
   componentDidMount() {}
   /**另一个组件已经成为了新的响应者，当前手势被取消时的处理逻辑 */
   onPanResponderTerminate = () => {
@@ -295,7 +313,7 @@ function A2() {
   return (
     <View
       style={{
-        // backgroundColor: '#f66',
+        backgroundColor: '#66f',
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
