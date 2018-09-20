@@ -24,3 +24,12 @@ export type Nav = {
    */
   switch: tSwitch
 };
+
+export type NavigationBarProps = {
+  title: string | React.ReactElement,
+  left: string | React.ReactElement,
+  right: string | React.ReactElement,
+  titleNext: string | React.ReactElement,
+  leftNext: string | React.ReactElement,
+  rightNext: string | React.ReactElement
+};

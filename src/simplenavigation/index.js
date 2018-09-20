@@ -76,7 +76,7 @@ export class SimpleNavigation {
   };
   /**返回上一个页面 */
   back = () => {
-    if (this.isTransitionRunning) {
+    if (this.isTransitionRunning || this.stackRouter.findIndex(item => item.state === 2) == -1) {
       return;
     }
     this.stackRouter.forEach((item, index) => {

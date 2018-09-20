@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, Animated, Easing, Button, PanResponder } from 'react-native';
 import { tSwitch } from './type/enum';
 import { config } from './config';
-import { utils } from './utils';
 let pwidth = Dimensions.get('screen').width;
 // 缺省屏幕过渡动画设置,可以被覆盖
 const DefaultTransitionSpec = {
@@ -48,16 +47,16 @@ export class Transitioner extends Component<P> {
           justifyContent: 'center',
           alignItems: 'center',
           position: 'absolute',
-          top: 0,
+          top: 64,
           right: 0,
           bottom: 0,
           left: 0,
           zIndex: sort,
           // backgroundColor: '#E9E9EF',
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.5,
-          shadowRadius: 5,
+          // shadowColor: 'black',
+          // shadowOffset: { width: 0, height: 10 },
+          // shadowOpacity: 0.5,
+          // shadowRadius: 5,
           transform: [{ translateX: this.state.position }]
         }}
         // style={{

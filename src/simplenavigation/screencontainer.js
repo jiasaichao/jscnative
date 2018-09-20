@@ -5,6 +5,7 @@ import { tSwitch } from './type/enum';
 import { Transitioner } from './transitioner';
 import { config } from './config';
 import { Nav } from './type/nav';
+import { NavigationBar } from './navigationbar';
 let pwidth = Dimensions.get('screen').width;
 
 /**拖拽释放后动画执行的最大时间ms，实际应小于此值因为剩余距离总是小于全部距离 */
@@ -63,6 +64,7 @@ export class ScreenContainer extends Component<P> {
   render() {
     return (
       <View style={{ flex: 1 }} {...this._panResponder.panHandlers}>
+        <NavigationBar />
         {this.props.stackRouter.map((item, index) => {
           let Aaaa = item.screen;
           return (
@@ -71,10 +73,10 @@ export class ScreenContainer extends Component<P> {
             </Transitioner>
           );
         })}
-        <View style={{ marginTop: 30, position: 'absolute', zIndex: 77 }}>
+        <View style={{ marginTop: 94, position: 'absolute', zIndex: 77 }}>
           <Button title="确定" onPress={this.queding} />
         </View>
-        <View style={{ marginTop: 30, left: 80, position: 'absolute', zIndex: 77 }}>
+        <View style={{ marginTop: 94, left: 80, position: 'absolute', zIndex: 77 }}>
           <Button title="返回" onPress={this.fanhui} />
         </View>
       </View>
