@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, Animated, Easing, Button, PanResponder } from 'react-native';
 import { tSwitch } from './type/enum';
 import { config } from './config';
+import { utils } from './utils';
 let pwidth = Dimensions.get('screen').width;
-// 缺省屏幕过渡动画设置,可以被覆盖
-const DefaultTransitionSpec = {
-  duration: 250, // 250毫秒
-  easing: Easing.inOut(Easing.ease),
-  timing: Animated.timing
-};
+
 type P = {
   switch: tSwitch,
   /**排序 */
@@ -91,7 +87,7 @@ export class Transitioner extends Component<P> {
     if (isAndimated) {
       utils.simpleNavigation.setTransitionRunning(true);
       Animated.timing(this.state.position, {
-        ...DefaultTransitionSpec,
+        ...config.DefaultTransitionSpec,
         toValue: targetValue,
         useNativeDriver: true
       }).start(function() {

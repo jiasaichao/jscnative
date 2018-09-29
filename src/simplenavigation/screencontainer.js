@@ -88,6 +88,7 @@ export class ScreenContainer extends Component<P> {
     utils.simpleNavigation
       .getPrevScreen()
       .element.state.position.setValue(config.backStartPosition - utils.dxToValue(config.backStartPosition, v));
+    utils.navigationBar.setValue(v);
     // console.log('v' + v);
     // this.state.value.setValue(v);
   };
@@ -159,34 +160,14 @@ export class ScreenContainer extends Component<P> {
   onPanResponderRelease = (evt, gestureState) => {
     if (gestureState.dx > pwidth / 2 || gestureState.vx > 0.5) {
       utils.simpleNavigation.back();
+      utils.navigationBar.back();
     } else {
       utils.simpleNavigation.screenView.refresh();
+      utils.navigationBar.next();
       // this.queding();
     }
   };
   onTouchend = () => {
     // utils.simpleNavigation.isResponding = false;
-  };
-  /**
-       根据位置做出相应处理
-       **/
-  changePosition = () => {
-    // if (_previousLeft + CIRCLE_SIZE / 2 <= Dimensions.get('window').width / 2) {
-    //   _previousLeft = lastLeft = 0;
-    //   this.setState({
-    //     style: {
-    //       left: _previousLeft,
-    //       top: _previousTop
-    //     }
-    //   });
-    // } else {
-    //   _previousLeft = lastLeft = Dimensions.get('window').width - CIRCLE_SIZE;
-    //   this.setState({
-    //     style: {
-    //       left: _previousLeft,
-    //       top: _previousTop
-    //     }
-    //   });
-    // }
   };
 }

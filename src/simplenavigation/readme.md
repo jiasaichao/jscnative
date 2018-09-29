@@ -8,4 +8,13 @@ react navigation 和 react native navigation都是很优秀的的组件，但是
 ## 思路
 导航是由一个打开页面的列表和所有的页面组成。
 * 所有页面
-* 
+```flow
+st=>start: 开始
+```
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
