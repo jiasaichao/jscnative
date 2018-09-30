@@ -6,6 +6,7 @@ import { Transitioner } from './transitioner';
 import { config } from './config';
 import { Nav } from './type/nav';
 import { NavigationBar } from './navigationbar';
+import { NavigationBar1 } from './navigationbar1';
 let pwidth = Dimensions.get('screen').width;
 
 /**拖拽释放后动画执行的最大时间ms，实际应小于此值因为剩余距离总是小于全部距离 */
@@ -64,7 +65,9 @@ export class ScreenContainer extends Component<P> {
   render() {
     return (
       <View style={{ flex: 1 }} {...this._panResponder.panHandlers}>
-        <NavigationBar />
+        {this.props.stackRouter.map((item, index) => {
+          return <NavigationBar1 key={item.id} id={item.id} sort={index} switch={item.switch} />;
+        })}
         {this.props.stackRouter.map((item, index) => {
           let Aaaa = item.screen;
           return (
@@ -83,12 +86,13 @@ export class ScreenContainer extends Component<P> {
     );
   }
   setValue = v => {
-    utils.simpleNavigation.getCurrentScreen().element.state.position.setValue(v);
-    // console.log('getPrevScreen', config.backStartPosition + utils.dxToValue(config.backStartPosition, v));
-    utils.simpleNavigation
-      .getPrevScreen()
-      .element.state.position.setValue(config.backStartPosition - utils.dxToValue(config.backStartPosition, v));
-    utils.navigationBar.setValue(v);
+    let currentScreen = utils.simpleNavigation.getCurrentScreen();
+    currentScreen.element.state.position.setValue(v);
+    currentScreen.header.setValue(1 - utils.dxToValue(1, v), utils.dxToValue(pwidth / 2, v));
+    let prevScreen = utils.simpleNavigation.getPrevScreen();
+    prevScreen.element.state.position.setValue(config.backStartPosition - utils.dxToValue(config.backStartPosition, v));
+    prevScreen.header.setValue(utils.dxToValue(1, v));
+    // utils.navigationBar.setValue(v);
     // console.log('v' + v);
     // this.state.value.setValue(v);
   };
@@ -160,10 +164,10 @@ export class ScreenContainer extends Component<P> {
   onPanResponderRelease = (evt, gestureState) => {
     if (gestureState.dx > pwidth / 2 || gestureState.vx > 0.5) {
       utils.simpleNavigation.back();
-      utils.navigationBar.back();
+      // utils.navigationBar.back();
     } else {
       utils.simpleNavigation.screenView.refresh();
-      utils.navigationBar.next();
+      // utils.navigationBar.next();
       // this.queding();
     }
   };

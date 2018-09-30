@@ -70,7 +70,7 @@ export class SimpleNavigation {
     this.maxId = router.id;
     // console.log(this.screenView1);
     this.screenView.refresh();
-    utils.navigationBar.next();
+    // utils.navigationBar.next();
   };
   /**返回上一个页面 */
   back = () => {
@@ -93,7 +93,7 @@ export class SimpleNavigation {
       this.stackRouter.pop(); //完成后删除最后一个
     });
 
-    utils.navigationBar.back();
+    // utils.navigationBar.back();
   };
   /**替换当前页并加载新页面 */
   replace = () => {};

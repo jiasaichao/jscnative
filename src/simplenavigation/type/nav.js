@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ViewStyle, TextStyle } from 'react-native';
 import { tSwitch } from './enum';
 import { Transitioner } from '../transitioner';
+import { NavigationBar1 } from '../navigationbar1';
 /**
  *
  */
@@ -23,7 +24,13 @@ export type Nav = {
    * pushHide:-->,backHide<--:
    *
    */
-  switch: tSwitch
+  switch: tSwitch,
+  header: NavigationBar1,
+  /**
+   * 页眉，就是screen里面的navigationOptions的属性，初始化是navigationOptions
+   * 为了可能会修改所有报错一份
+   */
+  headerOptions: NavigationBarProps
 };
 
 export type NavigationBarProps = Array<{

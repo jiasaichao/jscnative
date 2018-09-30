@@ -6,7 +6,7 @@ export const config = {
   screenWidth: 0,
   // 缺省屏幕过渡动画设置,可以被覆盖
   DefaultTransitionSpec: {
-    duration: 250, // 250毫秒
+    duration: 2500, // 250毫秒
     easing: Easing.inOut(Easing.ease),
     timing: Animated.timing
   },
