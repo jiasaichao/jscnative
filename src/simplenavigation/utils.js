@@ -1,4 +1,4 @@
-import { SimpleNavigation } from './simplenavigation';
+import { SimpleNavigation } from './';
 import { config } from './config';
 import { NavigationBar } from './navigationbar';
 type tUtils = { simpleNavigation: ?SimpleNavigation, navigationBar: ?NavigationBar, dxToValue: ({ targetWidth: number, dx: number }) => number };

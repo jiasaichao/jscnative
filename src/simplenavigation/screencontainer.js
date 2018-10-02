@@ -166,7 +166,7 @@ export class ScreenContainer extends Component<P> {
       utils.simpleNavigation.back();
       // utils.navigationBar.back();
     } else {
-      utils.simpleNavigation.screenView.refresh();
+      utils.simpleNavigation.restore();
       // utils.navigationBar.next();
       // this.queding();
     }

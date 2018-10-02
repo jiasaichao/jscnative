@@ -190,6 +190,7 @@ export class NavigationBar1 extends Component<> {
         this.startAnimated(true, 0, pwidth / 2);
         break;
       case 'backHide':
+        // console.log('backHide');
         this.startAnimated(false, 0, 0);
         break;
       case 'pushHide':
