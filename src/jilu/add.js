@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StatusBar, TouchableOpacity, Button, TextInput } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
 import styled from 'styled-components/native';
-import nav from './navigationservice';
 import { db } from './services';
 import { Provider, observer, inject } from 'mobx-react/native';
 
@@ -16,15 +14,15 @@ const InputContent = styled.TextInput.attrs({
 })`
   flex: 1;
 `;
-@inject('store')
+// @inject('store')
 @observer
 export default class HomeScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: '待办事项',
+  static navigationOptions = () => ({
+    headerTitle: '待办事项',
     headerRight: (
       <Button
         onPress={() => {
-          navigation.getParam('add')();
+          // navigation.getParam('add')();
           // navigation.goBack();
         }}
         title="完成"
@@ -37,7 +35,7 @@ export default class HomeScreen extends React.Component {
   };
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#666' }}>
         <StatusBar barStyle="light-content" />
         <InputContent
           onChangeText={text => {
@@ -49,13 +47,13 @@ export default class HomeScreen extends React.Component {
     );
   }
   componentDidMount() {
-    this.props.navigation.setParams({ add: this.add });
+    // this.props.navigation.setParams({ add: this.add });
   }
   add = () => {
-    this.props.store.add({ name: this.input.text, content: this.input.text });
+    // this.props.store.add({ name: this.input.text, content: this.input.text });
     // this.setState({ notes: db.notes.getData() });
     // db.notes.add({ name: this.input.text, content: this.input.text });
-    nav.goBack();
+    // nav.goBack();
     // navigationservice.navigate.
   };
 }

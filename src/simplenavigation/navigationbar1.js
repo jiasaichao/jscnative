@@ -34,9 +34,8 @@ export class NavigationBar1 extends Component<> {
   }
   state = {};
   render() {
-    let navigationBar = config.navigationBarExtend(
-      utils.simpleNavigation.stackRouter.find(item => item.id == this.props.id).screen.navigationOptions
-    );
+    let currentNavigation = utils.simpleNavigation.stackRouter.find(item => item.id == this.props.id).screen.navigationOptions;
+    let navigationBar = config.navigationBarExtend(typeof currentNavigation == 'function' ? currentNavigation() : currentNavigation);
     let backImage = null;
     let headerTitle = null;
     if (navigationBar.isHeaderBack) {
@@ -131,7 +130,11 @@ export class NavigationBar1 extends Component<> {
       <View style={styleRoot}>
         <Animated.View style={titleStyle}>{this.renderElement(navigationBar.headerTitle, navigationBar.headerTitleStyle)}</Animated.View>
         <Animated.View style={leftStyle}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              utils.simpleNavigation.back();
+            }}
+          >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {backImage}
               {headerTitle}
