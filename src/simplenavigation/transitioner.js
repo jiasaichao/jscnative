@@ -38,10 +38,10 @@ export class Transitioner extends Component<P> {
     return (
       <Animated.View
         style={{
-          backgroundColor: '#f66',
+          // backgroundColor: '#f66',
           height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
+          // justifyContent: 'center',
+          // alignItems: 'center',
           position: 'absolute',
           top: 64,
           right: 0,

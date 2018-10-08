@@ -13,9 +13,11 @@ export class SimpleNavigation {
     this.stackRouter.push({ screen: InitialRoute.screen, state: 1, switch: 'current', id: 1, routerName: options.initialRouteName });
     this.maxId = 1;
     utils.simpleNavigation = this;
-    let navigationBar = [config.navigationBarExtend(this.getCurrentScreen().screen.navigationOptions), {}];
+    //修改默认配置
+    config.navigationBarOptions = config.navigationBarExtend(options.navigationOptions);
+    // let navigationBar = [config.navigationBarExtend(this.getCurrentScreen().screen.navigationOptions), {}];
     // this.getPrevScreen();
-    utils.simpleNavigation.navigationBar = navigationBar;
+    // utils.simpleNavigation.navigationBar = navigationBar;
     return () => (
       <ScreenContainer
         ref={r => {
@@ -52,6 +54,11 @@ export class SimpleNavigation {
   /**跳转到新页面 */
   push = (routerName, params) => {
     if (this.isTransitionRunning) {
+      return;
+    }
+    //不存在这个页面
+    if (!(routerName in this.pages)) {
+      console.warn(`push的页面“${routerName}”不存在`);
       return;
     }
     this.stackRouter.forEach(item => {

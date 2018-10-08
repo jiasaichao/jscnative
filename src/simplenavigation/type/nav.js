@@ -10,7 +10,7 @@ export type Nav = {
   /**id第一个为1 */
   id: number,
   /**屏幕组件，也就是要展示的组件 */
-  screen: React.ReactElement,
+  screen: React.ReactElement & { navigationOptions: NavigationBarProps },
   element: Transitioner,
   /**
    * 状态1当前显示，2已经显示过（打开过的，返回一级一级返回这些页面），3缓存
@@ -38,7 +38,7 @@ export type NavigationBarProps = Array<{
   headerMode: 'none' | 'normal' | 'transparent',
   /**当前页面标题，也就是中间显示的 */
   headerTitle: ?string | React.ReactElement,
-  /**当前页面标题样式，本来不想加想改变可以用headerTitle是一个组件来代替，但是想如果能设置一个默认值改变所有的还是有用的 */
+  /**当前页面标题(Text的样式)样式，本来不想加想改变可以用headerTitle是一个组件来代替，但是想如果能设置一个默认值改变所有的还是有用的 */
   headerTitleStyle: ?TextStyle,
   /**当前页面左侧 */
   headerLeft: ?React.ReactElement,
@@ -46,6 +46,11 @@ export type NavigationBarProps = Array<{
   headerRight: ?React.ReactElement,
   /**是否显示back,默认显示 */
   isHeaderBack: boolean,
+  /**头部左侧（容器）样式 */
+  headerLeftStyle: ?ViewStyle,
+  /**头部又侧（容器）样式 */
+  headerRightStyle: ?ViewStyle,
+  /**返回图片可以是图片require('./assets/back-icon.png')也可以是组件 */
   headerBackImage: ?string | React.ReactElement,
   headerBackTitle: ?string | React.ReactElement,
   headerBackTitleStyle: ?TextStyle,

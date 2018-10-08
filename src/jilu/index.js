@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, StatusBar, TouchableOpacity, Button } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
-import NavigationService from './navigationservice';
+// import { createStackNavigator } from 'react-navigation';
+// import NavigationService from './navigationservice';
 import Add from './add';
 import Setting from './setting';
 import { db } from './services';
 import navigationservice from './navigationservice';
 import { Provider, observer, inject } from 'mobx-react/native';
 import { noteStore } from './store';
+import { SimpleNavigation } from '../simplenavigation';
+import { Icon } from '../components/icon';
 
 @observer
 // @inject('store')
@@ -15,23 +17,20 @@ class HomeScreen extends React.Component {
   static navigationOptions = {
     title: '首页',
     headerRight: (
-      <Button
-        onPress={() => {
-          NavigationService.navigate('Add');
-        }}
-        title="添加"
-        color="#fff"
-      />
+      <TouchableOpacity>
+        <Text style={{ color: '#fff', fontSize: 15 }}>添加</Text>
+      </TouchableOpacity>
     ),
     headerLeft: (
       <Button
         onPress={() => {
-          NavigationService.navigate('Setting');
+          // NavigationService.navigate('Setting');
         }}
         title="设置"
         color="#fff"
       />
-    )
+    ),
+    headerTitle: '首页'
   };
   constructor(props) {
     super(props);
@@ -39,7 +38,7 @@ class HomeScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
         <StatusBar barStyle="light-content" />
         <View style={{ paddingLeft: 15 }}>
           {noteStore.list.map(item => (
@@ -71,17 +70,10 @@ class HomeScreen extends React.Component {
     // });
   }
 }
-const TopLevelNavigator = createStackNavigator(
+
+const App1 = new SimpleNavigation(
   {
-    Home: {
-      screen: HomeScreen
-    },
-    Add: {
-      screen: Add
-    },
-    Setting: {
-      screen: Setting
-    }
+    Home: { screen: HomeScreen }
   },
   {
     initialRouteName: 'Home',
@@ -89,22 +81,10 @@ const TopLevelNavigator = createStackNavigator(
       headerStyle: {
         backgroundColor: '#57B784'
       },
-      headerTintColor: '#fff'
+      headerTitleStyle: { color: '#fff' },
+      headerLeftStyle: { paddingLeft: 0 },
+      headerBackImage: <Icon name="arrowLeft" height="24" width="46" color="#fff" />
     }
   }
 );
-export default class App extends React.Component {
-  // ...
-
-  render() {
-    return (
-      <Provider store={noteStore}>
-        <TopLevelNavigator
-          ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-        />
-      </Provider>
-    );
-  }
-}
+export default App1;

@@ -76,12 +76,6 @@ export class ScreenContainer extends Component<P> {
             </Transitioner>
           );
         })}
-        <View style={{ marginTop: 94, position: 'absolute', zIndex: 77 }}>
-          <Button title="确定" onPress={this.queding} />
-        </View>
-        <View style={{ marginTop: 94, left: 80, position: 'absolute', zIndex: 77 }}>
-          <Button title="返回" onPress={this.fanhui} />
-        </View>
       </View>
     );
   }
