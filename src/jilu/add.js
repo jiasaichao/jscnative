@@ -3,7 +3,8 @@ import { View, Text, StatusBar, TouchableOpacity, Button, TextInput } from 'reac
 import styled from 'styled-components/native';
 import { db } from './services';
 import { Provider, observer, inject } from 'mobx-react/native';
-
+import { Page } from './components/page';
+import { SimpleNavigation, Action } from '../simplenavigation';
 // import RxDB from 'rxdb';
 const InputContent = styled.TextInput.attrs({
   multiline: true,
@@ -20,14 +21,15 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = () => ({
     headerTitle: '待办事项',
     headerRight: (
-      <Button
+      <TouchableOpacity
         onPress={() => {
+          Action.back();
           // navigation.getParam('add')();
           // navigation.goBack();
         }}
-        title="完成"
-        color="#fff"
-      />
+      >
+        <Text style={{ color: '#fff', fontSize: 15 }}>完成</Text>
+      </TouchableOpacity>
     )
   });
   input = {
@@ -35,7 +37,7 @@ export default class HomeScreen extends React.Component {
   };
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#666' }}>
+      <Page>
         <StatusBar barStyle="light-content" />
         <InputContent
           onChangeText={text => {
@@ -43,7 +45,7 @@ export default class HomeScreen extends React.Component {
             this.input.text = text;
           }}
         />
-      </View>
+      </Page>
     );
   }
   componentDidMount() {

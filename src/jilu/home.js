@@ -5,7 +5,7 @@ import { Provider, observer, inject } from 'mobx-react/native';
 import { noteStore } from './store';
 import { SimpleNavigation } from '../simplenavigation';
 import { utils } from '../simplenavigation/utils';
-
+import { Page } from './components/page';
 @observer
 // @inject('store')
 export class HomeScreen extends React.Component {
@@ -38,7 +38,7 @@ export class HomeScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <Page>
         <StatusBar barStyle="light-content" />
         <View style={{ paddingLeft: 15 }}>
           {noteStore.list.map(item => (
@@ -55,7 +55,7 @@ export class HomeScreen extends React.Component {
           ))} */}
         </View>
         <Text>Home Screen</Text>
-      </View>
+      </Page>
     );
   }
   componentDidMount() {

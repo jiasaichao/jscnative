@@ -131,3 +131,11 @@ export class SimpleNavigation {
     this.isTransitionRunning = value;
   };
 }
+export const Action = {
+  push: () => {
+    utils.simpleNavigation.push();
+  },
+  back: () => {
+    utils.simpleNavigation.back();
+  }
+};
