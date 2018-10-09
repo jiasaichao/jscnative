@@ -35,6 +35,11 @@ export class Transitioner extends Component<P> {
   }
   render() {
     const { sort } = this.props;
+    let navigationOptions = utils.getNavigationOptionsById(this.props.id);
+    let barStyle = { height: 64 };
+    if (navigationOptions.headerBackground) {
+      barStyle.backgroundColor = navigationOptions.headerBackground;
+    }
     return (
       <Animated.View
         style={{
@@ -43,7 +48,7 @@ export class Transitioner extends Component<P> {
           // justifyContent: 'center',
           // alignItems: 'center',
           position: 'absolute',
-          top: 64,
+          top: 0,
           right: 0,
           bottom: 0,
           left: 0,
@@ -59,6 +64,7 @@ export class Transitioner extends Component<P> {
         //   transform: [{ translateX: this.state.value }]
         // }}
       >
+        <View style={barStyle} />
         {this.props.children}
       </Animated.View>
     );

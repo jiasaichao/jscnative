@@ -20,6 +20,7 @@ export class HomeScreen extends React.Component {
         <Text style={{ color: '#fff', fontSize: 15 }}>添加</Text>
       </TouchableOpacity>
     ),
+    // headerBackground: '#f66',
     headerLeft: (
       <Button
         onPress={() => {

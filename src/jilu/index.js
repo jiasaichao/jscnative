@@ -20,9 +20,7 @@ const App1 = new SimpleNavigation(
   {
     initialRouteName: 'Home',
     navigationOptions: {
-      headerStyle: {
-        backgroundColor: '#57B784'
-      },
+      headerBackground: '#57B784',
       headerTitleStyle: { color: '#fff' },
       headerLeftStyle: { paddingLeft: 0 },
       headerBackImage: <Icon name="arrowLeft" height="24" width="46" color="#fff" />

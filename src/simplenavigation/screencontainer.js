@@ -66,7 +66,7 @@ export class ScreenContainer extends Component<P> {
     return (
       <View style={{ flex: 1 }} {...this._panResponder.panHandlers}>
         {this.props.stackRouter.map((item, index) => {
-          return <NavigationBar1 key={item.id} id={item.id} sort={index} switch={item.switch} />;
+          return <NavigationBar1 key={item.id} id={item.id} state={item.state} switch={item.switch} />;
         })}
         {this.props.stackRouter.map((item, index) => {
           let Aaaa = item.screen;
