@@ -2,7 +2,8 @@ import { observable, action, toJS, runInAction } from 'mobx';
 import { db, NoteModel } from './services';
 
 class NoteStore {
-  @observable list: Array<NoteModel>;
+  @observable
+  list: Array<NoteModel>;
 
   constructor() {
     this.list = [];

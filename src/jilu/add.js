@@ -5,6 +5,7 @@ import { db } from './services';
 import { Provider, observer, inject } from 'mobx-react/native';
 import { Page } from './components/page';
 import { SimpleNavigation, Action } from '../simplenavigation';
+import { noteStore } from './store';
 // import RxDB from 'rxdb';
 const InputContent = styled.TextInput.attrs({
   multiline: true,
@@ -52,6 +53,7 @@ export default class HomeScreen extends React.Component {
     // this.props.navigation.setParams({ add: this.add });
   }
   add = () => {
+    noteStore.add({ name: this.input.text, content: this.input.text });
     // this.props.store.add({ name: this.input.text, content: this.input.text });
     // this.setState({ notes: db.notes.getData() });
     // db.notes.add({ name: this.input.text, content: this.input.text });
