@@ -72,7 +72,13 @@ export class ScreenContainer extends Component<P> {
           let Aaaa = item.screen;
           return (
             <Transitioner key={item.id} id={item.id} sort={index} switch={item.switch}>
-              <Aaaa />
+              <Aaaa
+                ref={r => {
+                  if (r) {
+                    item._this = r;
+                  }
+                }}
+              />
             </Transitioner>
           );
         })}

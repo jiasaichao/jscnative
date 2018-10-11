@@ -6,6 +6,7 @@ import { Provider, observer, inject } from 'mobx-react/native';
 import { Page } from './components/page';
 import { SimpleNavigation, Action } from '../simplenavigation';
 import { noteStore } from './store';
+import { utils } from '../simplenavigation/utils';
 // import RxDB from 'rxdb';
 const InputContent = styled.TextInput.attrs({
   multiline: true,
@@ -19,20 +20,24 @@ const InputContent = styled.TextInput.attrs({
 // @inject('store')
 @observer
 export default class HomeScreen extends React.Component {
-  static navigationOptions = () => ({
-    headerTitle: '待办事项',
-    headerRight: (
-      <TouchableOpacity
-        onPress={() => {
-          Action.back();
-          // navigation.getParam('add')();
-          // navigation.goBack();
-        }}
-      >
-        <Text style={{ color: '#fff', fontSize: 15 }}>完成</Text>
-      </TouchableOpacity>
-    )
-  });
+  static navigationOptions = ({ id }) => {
+    return {
+      headerTitle: '待办事项',
+      headerRight: (
+        <TouchableOpacity
+          onPress={() => {
+            utils.getNavigationThisById(id).add();
+            // _this.add();
+            Action.back();
+            // navigation.getParam('add')();
+            // navigation.goBack();
+          }}
+        >
+          <Text style={{ color: '#fff', fontSize: 15 }}>完成</Text>
+        </TouchableOpacity>
+      )
+    };
+  };
   input = {
     text: ''
   };
