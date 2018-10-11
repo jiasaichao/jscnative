@@ -30,7 +30,10 @@ export type Nav = {
    * 页眉，就是screen里面的navigationOptions的属性，初始化是navigationOptions
    * 为了可能会修改所有报错一份
    */
-  headerOptions: NavigationBarProps
+  headerOptions: NavigationBarProps,
+  /*global JSX*/
+  /**当前屏幕组件的ref，可以调用里面的方法 */
+  _this: JSX.Element
 };
 
 export type NavigationBarProps = Array<{
