@@ -3,10 +3,11 @@ import { View, Text, StatusBar, TouchableOpacity, Button } from 'react-native';
 import { db } from './services';
 import { Provider, observer, inject } from 'mobx-react/native';
 import { noteStore } from './store';
-import { SimpleNavigation } from '../simplenavigation';
+import { SimpleNavigation, Action } from '../simplenavigation';
 import { utils } from '../simplenavigation/utils';
 import { Page } from './components/page';
-
+import PouchDB from 'pouchdb-core';
+PouchDB.plugin(require('pouchdb-adapter-asyncstorage').default);
 @observer
 // @inject('store')
 export class HomeScreen extends React.Component {
@@ -15,7 +16,7 @@ export class HomeScreen extends React.Component {
     headerRight: (
       <TouchableOpacity
         onPress={() => {
-          utils.simpleNavigation.push('Add');
+          Action.push('Add');
         }}
       >
         <Text style={{ color: '#fff', fontSize: 15 }}>添加</Text>
@@ -63,6 +64,28 @@ export class HomeScreen extends React.Component {
     db.init().then(() => {
       noteStore.getData();
     });
+    let db1 = new PouchDB('my_database', { adapter: 'asyncstorage' });
+    // db1
+    //   .put({
+    //     _id: '1',
+    //     title: 'Heroes'
+    //   })
+    //   .then(() => {
+    //     console.log(1111);
+    //   })
+    //   .catch(doc => console.log(doc));
+    db1
+      .get('1')
+      .then(doc => console.log(doc))
+      .catch(doc => console.log(doc));
+    // db1
+    //   .put({
+    //     _id: 1,
+    //     title: 'Heroes'
+    //   })
+    //   .then(a => {
+    //     console.log(a);
+    //   });
     // db.init(() => {
     //   noteStore.getData();
     //   // console.log(this.props.store);
