@@ -6,10 +6,6 @@ import { noteStore } from './store';
 import { SimpleNavigation } from '../simplenavigation';
 import { utils } from '../simplenavigation/utils';
 import { Page } from './components/page';
-import paa from 'pouchdb-adapter-asyncstorage';
-import RxDB from 'rxdb';
-RxDB.plugin(paa);
-const dbName = 'heroesreactdatabase1';
 
 @observer
 // @inject('store')
@@ -73,45 +69,5 @@ export class HomeScreen extends React.Component {
     //   // let notes = db.notes.getData();
     //   // this.setState({ notes });
     // });
-  }
-  async createDatabase() {
-    const db = await RxDB.create({
-      name: dbName,
-      adapter: 'asyncstorage',
-      password: 'myLongAndStupidPassword',
-      multiInstance: false
-    });
-    const heroCollection = await db.collection({
-      name: 'heroes',
-      schema: {
-        version: 0,
-        title: 'human schema no compression',
-        keyCompression: true,
-        type: 'object',
-        properties: {
-          firstName: {
-            type: 'string',
-            index: true // <- an index for firstName will now be created
-          },
-          lastName: {
-            type: 'string'
-          },
-          familyName: {
-            type: 'string'
-          }
-        },
-        compoundIndexes: [
-          ['lastName', 'familyName'] // <- this will create a compound-index for these two fields
-        ]
-      }
-    });
-    // heroCollection.sync({
-    //   remote: syncURL + dbName + '/',
-    //   options: {
-    //     live: true,
-    //     retry: true
-    //   }
-    // });
-    return db;
   }
 }
