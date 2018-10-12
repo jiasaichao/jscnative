@@ -6,6 +6,9 @@ import { noteStore } from './store';
 import { SimpleNavigation, Action } from '../simplenavigation';
 import { utils } from '../simplenavigation/utils';
 import { Page } from './components/page';
+
+import SQLiteStorage from 'react-native-sqlite-storage';
+SQLiteStorage.DEBUG(true);
 import PouchDB from 'pouchdb-core';
 PouchDB.plugin(require('pouchdb-adapter-asyncstorage').default);
 @observer
@@ -61,6 +64,18 @@ export class HomeScreen extends React.Component {
     );
   }
   componentDidMount() {
+    SQLiteStorage.openDatabase(
+      'test.db',
+      '1.0',
+      'Test Database',
+      200000,
+      () => {
+        console.log('Database OPENED');
+      },
+      err => {
+        console.log('SQL Error: ' + err);
+      }
+    );
     db.init().then(() => {
       noteStore.getData();
     });
