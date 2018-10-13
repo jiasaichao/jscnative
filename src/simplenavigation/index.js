@@ -132,8 +132,8 @@ export class SimpleNavigation {
   };
 }
 export const Action = {
-  push: () => {
-    utils.simpleNavigation.push();
+  push: name => {
+    utils.simpleNavigation.push(name);
   },
   back: () => {
     utils.simpleNavigation.back();
