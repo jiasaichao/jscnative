@@ -1,24 +1,40 @@
 import { observable, action, toJS, runInAction } from 'mobx';
-import { db, NoteModel } from './services';
+import { Category, Notes } from './entity';
+import { db } from './services';
 
 class NoteStore {
   @observable
-  list: Array<NoteModel>;
+  list: Array<Notes>;
 
   constructor() {
     this.list = [];
   }
 
   // @action
-  add = (model: NoteModel) => {
-    db.notes.add(model).then(() => {
-      this.getData();
-    });
+
+  add = async (model: Notes) => {
+    // debugger;
+    model.createDate = model.createDate || new Date().getTime();
+    model.id = model.id || new Date().getTime();
+    console.log(db.notes().findOne);
+    let notes = await db.notes().findOne({ order: { sort: 'DESC' } });
+    if (notes) {
+      model.sort = notes.sort + 1;
+    } else {
+      model.sort = 1;
+    }
+
+    await db
+      .notes()
+      .createQueryBuilder()
+      .insert()
+      .values(model)
+      .execute();
   };
 
   @action
-  getData = () => {
-    this.list = db.notes.getData();
+  getData = async () => {
+    this.list = await db.notes().find();
     // console.log(11111, toJS(this.notes));
   };
 }

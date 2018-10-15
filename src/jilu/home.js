@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, StatusBar, TouchableOpacity, Button } from 'react-native';
 import { db } from './services';
+import { Category } from './entity';
 import { Provider, observer, inject } from 'mobx-react/native';
 import { noteStore } from './store';
 import { SimpleNavigation, Action } from '../simplenavigation';
 import { utils } from '../simplenavigation/utils';
 import { Page } from './components/page';
-import { Author } from './author';
 // import SQLiteStorage from 'react-native-sqlite-storage';
 // SQLiteStorage.DEBUG(true);
-import { createConnection, getRepository, Entity, PrimaryGeneratedColumn, Column } from 'typeorm/browser';
-
-import PouchDB from 'pouchdb-core';
-PouchDB.plugin(require('pouchdb-adapter-asyncstorage').default);
 
 @observer
 // @inject('store')
@@ -66,45 +62,9 @@ export class HomeScreen extends React.Component {
       </Page>
     );
   }
-  componentDidMount() {
-    createConnection({
-      type: 'react-native',
-      database: 'test',
-      location: 'default',
-      logging: ['error', 'query', 'schema'],
-      synchronize: true,
-      entities: [Author]
-    });
-    db.init().then(() => {
-      noteStore.getData();
-    });
-    let db1 = new PouchDB('my_database', { adapter: 'asyncstorage' });
-    // db1
-    //   .put({
-    //     _id: '1',
-    //     title: 'Heroes'
-    //   })
-    //   .then(() => {
-    //     console.log(1111);
-    //   })
-    //   .catch(doc => console.log(doc));
-    db1
-      .get('1')
-      .then(doc => console.log(doc))
-      .catch(doc => console.log(doc));
-    // db1
-    //   .put({
-    //     _id: 1,
-    //     title: 'Heroes'
-    //   })
-    //   .then(a => {
-    //     console.log(a);
-    //   });
-    // db.init(() => {
-    //   noteStore.getData();
-    //   // console.log(this.props.store);
-    //   // let notes = db.notes.getData();
-    //   // this.setState({ notes });
-    // });
+  async componentDidMount() {
+    // debugger;
+    await db.init();
+    await noteStore.getData();
   }
 }

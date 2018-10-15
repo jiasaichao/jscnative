@@ -1,81 +1,50 @@
-import Loki from 'lokijs';
-import LokiReactNativeAdapter from '../util/loki-react-native-asyncstorage-adapter';
-const lokiDB = new Loki('loki.json', { adapter: new LokiReactNativeAdapter() });
-export type Table<M> = {
-  add: (data: M) => {},
-  del: (id: number) => {},
-  find(): Array<M>
+import { createConnection, getRepository, Entity, PrimaryGeneratedColumn, Column, Connection, Repository } from 'typeorm/browser';
+import { Category, Notes } from '../entity';
+type Tdb = {
+  init: () => {},
+  connection: Connection,
+  category: () => Repository<Category>,
+  notes: () => Repository<Notes>
 };
-export type LokiModel = {
-  $loki: number,
-  meta: {
-    created: number, // Date().getTime()
-    revision: number,
-    updated: number, // Date().getTime()
-    version: number
-  }
-};
-export type CategoryModel = LokiModel & {
-  name: string,
-  sort: number,
-  createTime: number,
-  updateTime: number
-};
-export type NoteModel = LokiModel & {
-  /**名称 */
-  name: string,
-  /**排序 */
-  sort: number
-};
-// lokiDB.deleteDatabase();
-// lokiDB.saveDatabase();
-// console.log(lokiDB);
-// lokiDB.collections.find((item)=>item.name)
-// interface Serializable {
-//     serialize(): string;
-//   }
-type noteTable = {
-  category: Table<CategoryModel>
-};
-export const db = {
-  init: () => {
-    return new Promise((resolve, reject) => {
-      lokiDB.loadDatabase({}, () => {
-        //   console.log(lokiDB.collections.length);
-        if (lokiDB.collections.length == 0) {
-          let category = lokiDB.addCollection('category');
-          category.insert({ name: '收件箱', sort: 1 });
-          category.insert({ name: '购物', sort: 2 });
-          category.insert({ name: '想看的电影', sort: 3 });
-          category.insert({ name: '愿望列表', sort: 4 });
-          category.insert({ name: '工作', sort: 2 });
-          lokiDB.addCollection('notes');
-          lokiDB.saveDatabase(resolve);
-        } else {
-          resolve();
-        }
-      });
+export const db: Tdb = {
+  init: async () => {
+    let conn = await createConnection({
+      type: 'react-native',
+      database: 'test',
+      location: 'default',
+      logging: ['error', 'query', 'schema'],
+      /**指示是否应在每次启动应用程序时自动创建数据库架构。请注意此选项，不要在生产中使用它 - 否则您可能会丢失生产数据 */
+      synchronize: true,
+      entities: [Category, Notes]
     });
-
+    db.connection = conn;
+    let categoryRepository = conn.getRepository(Category);
+    let count = await categoryRepository.count();
+    if (count == 0) {
+      let time = new Date().getTime();
+      let defalutList = [
+        { id: time, name: '收件箱', sort: 1 },
+        { id: time + 1, name: '购物', sort: 2 },
+        { id: time + 2, name: '想看的电影', sort: 3 },
+        { id: time + 3, name: '愿望列表', sort: 4 },
+        { id: time + 4, name: '工作', sort: 5 }
+      ];
+      await categoryRepository
+        .createQueryBuilder()
+        .insert()
+        .values(defalutList)
+        .execute();
+    }
     // console.log('DB', lokiDB);
   },
-  category: getCollection('category'),
-  notes: getCollection('notes')
+  /**链接 */
+  connection: null,
+  category: () => {
+    let repository = db.connection.getRepository(Category);
+    return repository;
+  },
+  notes: () => {
+    let repository = db.connection.getRepository(Notes);
+    return repository;
+  }
 };
-function getCollection(name) {
-  let ret = {};
-  ret.add = obj => {
-    let collection = lokiDB.collections.find(item => item.name == name);
-    // console.log(name + 'collection', collection);
-    collection.insert(obj);
-    return new Promise((resolve, reject) => {
-      lokiDB.saveDatabase(resolve);
-    });
-  };
-  ret.del = () => {};
-  ret.getData = () => {
-    return lokiDB.collections.find(item => item.name == name).data;
-  };
-  //   console.log(name, ret);
-  return ret;
-}
